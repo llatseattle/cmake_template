@@ -1,5 +1,5 @@
 # cmake requirement
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.0)
 # Project name
 set(ROOT_PROJ_NAME "bitcoinEngine")
 project (${ROOT_PROJ_NAME})
