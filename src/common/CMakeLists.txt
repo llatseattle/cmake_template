@@ -100,6 +100,3 @@ endif()
 # Print some messages
 ##############################################################################
 MESSAGE("-- The ${LIB_NAME} library is generated.")
-MESSAGE(${LIB_HEADERS} )
-
-

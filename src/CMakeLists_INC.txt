@@ -12,7 +12,7 @@ include (Common)
 SET(Boost_ADDITIONAL_VERSIONS "1.58" )
 FIND_PACKAGE(Boost)
 IF(NOT Boost_FOUND)
-	message (FATAL_ERROR "Boost not found.")
+	message (FATAL_ERROR "-- Boost not found.")
 ENDIF()
 
 include_directories(${Boost_INCLUDE_DIRS})
@@ -79,14 +79,112 @@ source_group ("Precompiled Headers" FILES ${PCHFiles})
 
 
 ##############################################################################
-# Common includes
+# Mysql
 ##############################################################################
 
-# mysql
-IF(UNIX)
-include_directories( /usr/include/mysql/ )
-ENDIF(UNIX)
+find_package(Mysql)
+if(MySQL_FOUND)
+#	message("-- Found mysql at ${MySQL_INCLUDE_DIR}")
+	include_directories(${MySQL_INCLUDE_DIR})
+ELSE()
+	set (MySQL_NOTFOUND 1)
+ENDIF()
 
+##############################################################################
+# Ta-Lib
+##############################################################################
+
+find_package(TaLib)
+if(TaLib_FOUND)
+#	message("-- Found TaLib at ${TaLib_INCLUDE_DIR}")
+	include_directories(${TaLib_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find TaLib")
+ENDIF()
+
+##############################################################################
+# Cereal Rapidjson
+##############################################################################
+
+find_package(Cereal)
+if(Cereal_FOUND)
+#	message("-- Found Cereal at ${Cereal_INCLUDE_DIR}")
+	include_directories(${Cereal_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Cereal")
+ENDIF()
+
+##############################################################################
+# Rapidjson
+##############################################################################
+
+find_package(Rapidjson)
+if(Rapidjson_FOUND)
+#	message("-- Found Rapidjson at ${Rapidjson_INCLUDE_DIR}")
+	include_directories(${Rapidjson_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Rapidjson")
+ENDIF()
+
+##############################################################################
+# Google test: gtest and gmock
+##############################################################################
+
+find_package(GoogleTest)
+if(GTest_FOUND)
+#	message("-- Found Gtest at ${Gtest_INCLUDE_DIR}")
+	include_directories(${Gtest_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Gtest")
+ENDIF()
+
+##############################################################################
+# Nanomsg
+##############################################################################
+
+find_package(Nanomsg)
+if(Nanomsg_FOUND)
+#	message("-- Found Nanomsg at ${Nanomsg_INCLUDE_DIR}")
+	include_directories(${Nanomsg_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Nanomsg")
+ENDIF()
+
+##############################################################################
+# Seasocks
+##############################################################################
+
+find_package(Seasocks)
+if(Seasocks_FOUND)
+#	message("-- Found Seasocks at ${Seasocks_INCLUDE_DIR}")
+	include_directories(${Seasocks_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Seasocks")
+ENDIF()
+
+##############################################################################
+# Tcmalloc
+##############################################################################
+
+find_package(Tcmalloc)
+if(Tcmalloc_FOUND)
+#	message("-- Found Tcmalloc at ${Tcmalloc_INCLUDE_DIR}")
+	include_directories(${Tcmalloc_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Tcmalloc")
+ENDIF()
+
+##############################################################################
+# YamlCpp
+##############################################################################
+
+find_package(YamlCpp)
+if(YamlCpp_FOUND)
+#	message("-- Found YamlCpp at ${Tcmalloc_INCLUDE_DIR}")
+	include_directories(${YamlCpp_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find YamlCpp")
+ENDIF()
 
 ##############################################################################
 # Eigen

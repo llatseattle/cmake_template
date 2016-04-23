@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.0)
 # Project name
 set(ROOT_PROJ_NAME "bitcoinEngine")
 project (${ROOT_PROJ_NAME})
-message("The root directory of project: ${CMAKE_BINARY_DIR}")
+message("-- The root directory of project: ${CMAKE_BINARY_DIR}")
 # add common cmake setting and libraries
 set(SRCPATH ${CMAKE_CURRENT_SOURCE_DIR})
 
