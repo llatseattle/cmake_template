@@ -1,0 +1,19 @@
+# cmake requirement
+cmake_minimum_required (VERSION 3.0)
+# Project name
+project (bitcoinEngine)
+
+# add common cmake setting and libraries
+set(SRCPATH ${CMAKE_CURRENT_SOURCE_DIR})
+include("${SRCPATH}/_CMakeLists.txt")
+
+# add subdirectory and subprojects
+
+# common includes and headers
+add_subdirectory(${SRCPATH}/common)
+
+# core project
+add_subdirectory(${SRCPATH}/core)
+# sub project
+add_subdirectory(${SRCPATH}/algorithms)
+
