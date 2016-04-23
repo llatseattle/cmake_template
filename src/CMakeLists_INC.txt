@@ -1,38 +1,6 @@
 # add our path and macros to cmake module path
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include (Common)
-##############################################################################
-# External libraries
-##############################################################################
-
-
-##############################################################################
-# Boost
-##############################################################################
-SET(Boost_ADDITIONAL_VERSIONS "1.58" )
-FIND_PACKAGE(Boost)
-IF(NOT Boost_FOUND)
-	message (FATAL_ERROR "-- Boost not found.")
-ENDIF()
-
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${Boost_INCLUDE_LIB_DIRS})
-#basic definitions
-add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
-
-##############################################################################
-# OpenMP
-##############################################################################
-# disable openmp if using with intel mkl_rt.lib.
-# if linking to four mkl layer libs, then openmp is ok.
-find_package(OpenMP)
-IF(OPENMP_FOUND)
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-	add_definitions(-DUSE_OPENMP)
-ELSE()
-	set (OPENMP_NOTFOUND 1)
-ENDIF()
 
 ##############################################################################
 # Complier Setting
@@ -67,123 +35,35 @@ IF(WIN32)
 add_definitions(-wd4018 -wd4267 -wd4101)
 add_definitions(-wd4190 -wd4244 -wd4305 -wd4099)
 ENDIF(WIN32)
-
 # in case cmake cannot detact that it's a CXX project
 #set_target_properties(project_name PROPERTIES LINKER_LANGUAGE CXX)
 
 ##############################################################################
-# Add special directory of files  cannot be generally added previously
-##############################################################################
-FILE (GLOB PCHFiles "${CMAKE_SOURCE_DIR}/stdafx.*")
-source_group ("Precompiled Headers" FILES ${PCHFiles})
-
-
-##############################################################################
-# Mysql
+# External libraries
 ##############################################################################
 
-find_package(Mysql)
-if(MySQL_FOUND)
-#	message("-- Found mysql at ${MySQL_INCLUDE_DIR}")
-	include_directories(${MySQL_INCLUDE_DIR})
-ELSE()
-	set (MySQL_NOTFOUND 1)
+##############################################################################
+# Boost
+##############################################################################
+SET(Boost_ADDITIONAL_VERSIONS "1.58" )
+FIND_PACKAGE(Boost)
+IF(NOT Boost_FOUND)
+	message (FATAL_ERROR "-- Boost not found.")
 ENDIF()
+include_directories(${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_LIB_DIRS})
+#basic definitions
+add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
 
 ##############################################################################
-# Ta-Lib
+# Cereal
 ##############################################################################
-
-find_package(TaLib)
-if(TaLib_FOUND)
-#	message("-- Found TaLib at ${TaLib_INCLUDE_DIR}")
-	include_directories(${TaLib_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find TaLib")
-ENDIF()
-
-##############################################################################
-# Cereal Rapidjson
-##############################################################################
-
 find_package(Cereal)
 if(Cereal_FOUND)
 #	message("-- Found Cereal at ${Cereal_INCLUDE_DIR}")
 	include_directories(${Cereal_INCLUDE_DIR})
 ELSE()
 	message("-- Cannot find Cereal")
-ENDIF()
-
-##############################################################################
-# Rapidjson
-##############################################################################
-
-find_package(Rapidjson)
-if(Rapidjson_FOUND)
-#	message("-- Found Rapidjson at ${Rapidjson_INCLUDE_DIR}")
-	include_directories(${Rapidjson_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find Rapidjson")
-ENDIF()
-
-##############################################################################
-# Google test: gtest and gmock
-##############################################################################
-
-find_package(GoogleTest)
-if(GTest_FOUND)
-#	message("-- Found Gtest at ${Gtest_INCLUDE_DIR}")
-	include_directories(${Gtest_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find Gtest")
-ENDIF()
-
-##############################################################################
-# Nanomsg
-##############################################################################
-
-find_package(Nanomsg)
-if(Nanomsg_FOUND)
-#	message("-- Found Nanomsg at ${Nanomsg_INCLUDE_DIR}")
-	include_directories(${Nanomsg_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find Nanomsg")
-ENDIF()
-
-##############################################################################
-# Seasocks
-##############################################################################
-
-find_package(Seasocks)
-if(Seasocks_FOUND)
-#	message("-- Found Seasocks at ${Seasocks_INCLUDE_DIR}")
-	include_directories(${Seasocks_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find Seasocks")
-ENDIF()
-
-##############################################################################
-# Tcmalloc
-##############################################################################
-
-find_package(Tcmalloc)
-if(Tcmalloc_FOUND)
-#	message("-- Found Tcmalloc at ${Tcmalloc_INCLUDE_DIR}")
-	include_directories(${Tcmalloc_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find Tcmalloc")
-ENDIF()
-
-##############################################################################
-# YamlCpp
-##############################################################################
-
-find_package(YamlCpp)
-if(YamlCpp_FOUND)
-#	message("-- Found YamlCpp at ${Tcmalloc_INCLUDE_DIR}")
-	include_directories(${YamlCpp_INCLUDE_DIR})
-ELSE()
-	message("-- Cannot find YamlCpp")
 ENDIF()
 
 ##############################################################################
@@ -197,6 +77,96 @@ ENDIF()
 #add_definitions(${EIGEN3_DEFINITIONS})
 
 ##############################################################################
+# Google test: gtest and gmock (only gtest is used here)
+##############################################################################
+find_package(GoogleTest)
+if(GTest_FOUND)
+#	message("-- Found Gtest at ${Gtest_INCLUDE_DIR}")
+	include_directories(${Gtest_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Gtest")
+ENDIF()
+
+##############################################################################
+# Mlpack
+##############################################################################
+find_package(Mlpack)
+if(Mlpack_FOUND)
+#	message("-- Found Mlpack at ${Mlpack_INCLUDE_DIR}")
+	include_directories(${Mlpack_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Mlpack")
+ENDIF()
+
+##############################################################################
+# Mysql
+##############################################################################
+find_package(Mysql)
+if(MySQL_FOUND)
+#	message("-- Found mysql at ${MySQL_INCLUDE_DIR}")
+	include_directories(${MySQL_INCLUDE_DIR})
+ELSE()
+	set (MySQL_NOTFOUND 1)
+ENDIF()
+
+##############################################################################
+# Nanomsg
+##############################################################################
+find_package(Nanomsg)
+if(Nanomsg_FOUND)
+#	message("-- Found Nanomsg at ${Nanomsg_INCLUDE_DIR}")
+	include_directories(${Nanomsg_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Nanomsg")
+ENDIF()
+
+##############################################################################
+# OpenMP
+##############################################################################
+# disable openmp if using with intel mkl_rt.lib.
+# if linking to four mkl layer libs, then openmp is ok.
+find_package(OpenMP)
+IF(OPENMP_FOUND)
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+	add_definitions(-DUSE_OPENMP)
+ELSE()
+	set (OPENMP_NOTFOUND 1)
+ENDIF()
+
+##############################################################################
+# Python
+##############################################################################
+find_package(PythonLibs)
+IF(PYTHONLIBS_FOUND)
+	include_directories(${PYTHON_INCLUDE_DIRS})
+ELSE()
+	set (PYTHONLIBS_NOTFOUND 1)
+ENDIF()
+
+##############################################################################
+# Rapidjson
+##############################################################################
+find_package(Rapidjson)
+if(Rapidjson_FOUND)
+#	message("-- Found Rapidjson at ${Rapidjson_INCLUDE_DIR}")
+	include_directories(${Rapidjson_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Rapidjson")
+ENDIF()
+
+##############################################################################
+# Seasocks
+##############################################################################
+find_package(Seasocks)
+if(Seasocks_FOUND)
+#	message("-- Found Seasocks at ${Seasocks_INCLUDE_DIR}")
+	include_directories(${Seasocks_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Seasocks")
+ENDIF()
+
+##############################################################################
 # SuiteSparse
 ##############################################################################
 #find_package (SuiteSparse)
@@ -205,44 +175,35 @@ ENDIF()
 #ENDIF ()
 #include_directories(${SuiteSparse_INCLUDE_DIR})
 
+##############################################################################
+# Ta-Lib
+##############################################################################
+find_package(TaLib)
+if(TaLib_FOUND)
+#	message("-- Found TaLib at ${TaLib_INCLUDE_DIR}")
+	include_directories(${TaLib_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find TaLib")
+ENDIF()
 
 ##############################################################################
-# CoMISo
+# Tcmalloc
 ##############################################################################
-#set (CoMISo_DIR
-#  ${CMAKE_SOURCE_DIR}/CoMISo/Solver
-#  ${CMAKE_SOURCE_DIR}/CoMISo/NSolver
-#  ${CMAKE_SOURCE_DIR}/CoMISo/EigenSolver
-#  ${CMAKE_SOURCE_DIR}/CoMISo/Config
-#  ${CMAKE_SOURCE_DIR}/CoMISo/Utils
-#)
-#gather_list_by_extension (comiso_Tcc "*T.cc" ${CoMISo_DIR})
-#gather_list_by_extension (comiso_cc "*.cc" ${CoMISo_DIR})
-#foreach (_ccfile ${comiso_cc})
-#			get_filename_component (_filename ${_ccfile} NAME)
-#			# message(STATUS "file " ${_filename})
-#			if (_filename MATCHES "\\T.cc$$")
-#				# message(STATUS "removed")
-#				list (REMOVE_ITEM comiso_cc ${_ccfile})
-#			endif ()
-#endforeach ()
-#gather_list_by_extension (comiso_hh "*.hh" ${CoMISo_DIR})
-#include_directories(${CMAKE_SOURCE_DIR})
-#add_definitions(-DINCLUDE_TEMPLATES) # Tell CoMISo to include *T.hpp into *.h
-
+find_package(Tcmalloc)
+if(Tcmalloc_FOUND)
+#	message("-- Found Tcmalloc at ${Tcmalloc_INCLUDE_DIR}")
+	include_directories(${Tcmalloc_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find Tcmalloc")
+ENDIF()
 
 ##############################################################################
-# Application specific preprocessor definitions
+# YamlCpp
 ##############################################################################
-
-#INCLUDE_DIRECTORIES(Entrance Constructor MeshStructure SparseSolver ANN CoMISo NURBS Analysis ConstructInclude Wap MeshIO)
-#ADD_EXECUTABLE(TSPND ${all_files} ${comiso_cc} ${comiso_hh})
-#target_link_libraries(TSPND ${SuiteSparse_LIBS} ${GoTools_LIBS} ${Boost_LIBRARIES} ${Matlab_LIBS} )
-
-
-#INSTALL(TARGETS kd_tree
-#LIBRARY DESTINATION lib
-#RUNTIME DESTINATION bin
-#ARCHIVE DESTINATION lib)
-#INSTALL(FILES ${project_h} DESTINATION include/kd_tree)
-
+find_package(YamlCpp)
+if(YamlCpp_FOUND)
+#	message("-- Found YamlCpp at ${YamlCpp_INCLUDE_DIR}")
+	include_directories(${YamlCpp_INCLUDE_DIR})
+ELSE()
+	message("-- Cannot find YamlCpp")
+ENDIF()
