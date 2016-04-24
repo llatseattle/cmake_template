@@ -13,9 +13,9 @@ ENDIF (Cereal_INCLUDE_DIR)
 # since for these libraries, they are synced with github, and build by myself
 # mostly, there is one more layer of folder due to gitrepo in the path_surfixes
 FIND_PATH(Cereal_INCLUDE_DIR
-	  NAMES cereal.hpp
+	  NAMES cmake_find_dummy_cereal
 	  PATHS /usr/include /usr/local/include $ENV{PATH}/include/ ~/Documents/Library
-	  PATH_SUFFIXES cereal/include/cereal
+	  PATH_SUFFIXES cereal/include/
 	)
 
 #MESSAGE(STATUS "Found Cereal: ${Cereal_INCLUDE_DIR}")

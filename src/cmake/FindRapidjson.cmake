@@ -22,22 +22,22 @@ FIND_PATH(Rapidjson_INCLUDE_DIR
 
 	IF (Rapidjson_INCLUDE_DIR)
 	  SET(Rapidjson_FOUND TRUE)
-	ELSE (Rapidjson_INCLUDE_DIR)
+	ELSE ()
 	  SET(Rapidjson_FOUND FALSE)
 	  SET( Rapidjson_LIBRARIES )
-	ENDIF (Rapidjson_INCLUDE_DIR)
+	ENDIF ()
 
 
 	IF (Rapidjson_FOUND)
 	  IF (NOT Rapidjson_FIND_QUIETLY)
-	    MESSAGE(STATUS "Found Rapidjson: ${Cereal_INCLUDE_DIR}")
+	    MESSAGE(STATUS "Found Rapidjson: ${Rapidjson_INCLUDE_DIR}")
 	  ENDIF (NOT Rapidjson_FIND_QUIETLY)
-	ELSE (Rapidjson_FOUND)
+	ELSE ()
 	  IF (Rapidjson_FIND_REQUIRED)
-	    MESSAGE(STATUS "Looked for Rapidjson libraries named ${Cereal_INCLUDE_DIR}.")
+	    MESSAGE(STATUS "Looked for Rapidjson libraries named ${Rapidjson_INCLUDE_DIR}.")
 	    MESSAGE(FATAL_ERROR "Could NOT find Rapidjson library")
-	  ENDIF (Rapidjson_FIND_REQUIRED)
-	ENDIF (Rapidjson_FOUND)
+	  ENDIF ()
+	ENDIF ()
 
 	MARK_AS_ADVANCED(
 	  Rapidjson_INCLUDE_DIR
